@@ -2,13 +2,12 @@ name: Scala CI
 
 on:
   push:
-    branches: [ devel ]
+    branches: [ '*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ '*' ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
