@@ -13,11 +13,11 @@ import cats.implicits._
 
 trait Alg(val name: String)
 
-case class Jwt(header: String, claims: String, signature: String) 
+case class RawJwt(header: String, claims: String, signature: String) 
 
-object Jwt {
-    given Show[Jwt]:
-        def show(jwt: Jwt): String = 
+object RawJwt {
+    given Show[RawJwt]:
+        def show(jwt: RawJwt): String = 
             jwt.header + "." + jwt.claims + "." + jwt.signature 
 }
 
@@ -73,6 +73,8 @@ case class StdClaims(
     val jwtId: Option[String]= None               
 ) extends Claims
 
+case class Jwt[H <: Header, C <: Claims](header: H, claims: C, signature: Binary)
+
 opaque type Binary = Array[Byte]
 
 object Binary {
@@ -111,7 +113,7 @@ def buildAndSign[F[_], H <: Header, C <: Claims](header: H, claims: C)
         (using E: MonadError[F, Throwable],
             signer: Signer[F], 
             headerEnc: AuxEncoder[H], 
-            claimsEnc: AuxEncoder[C]): F[Jwt] = {
+            claimsEnc: AuxEncoder[C]): F[RawJwt] = {
 
     def asciiBytes(s: String): Binary = Binary(s.getBytes(StandardCharsets.US_ASCII))
     def encodeToString(bin: Binary) = E.fromTry(Try(Base64.encodeBase64URLSafeString(bin.toArray)))
@@ -122,10 +124,8 @@ def buildAndSign[F[_], H <: Header, C <: Claims](header: H, claims: C)
         toSign          <- E.pure(headerBin + "." + claimsBin)
         signature       <- signer.sign(asciiBytes(toSign))
         signatureBin    <- encodeToString(signature)
-    yield Jwt(headerBin, claimsBin, signatureBin)
+    yield RawJwt(headerBin, claimsBin, signatureBin)
 }
-
-
 
 case class ParseResult[H <: Header, C <: Claims](header: H, claims: C, signature: Binary, signedPart: String)
 

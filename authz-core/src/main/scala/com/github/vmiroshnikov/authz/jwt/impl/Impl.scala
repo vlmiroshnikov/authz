@@ -1,10 +1,42 @@
 package com.github.vmiroshnikov.authz.jwt.impl
 
-import java.security.{PrivateKey, PublicKey, Signature}
+import java.security.{PrivateKey, PublicKey, Signature, MessageDigest}
+import javax.crypto.{KeyGenerator, Mac, SecretKey}
 
 import cats.effect.Sync
 import cats.implicits._
 import com.github.vmiroshnikov.authz.jwt._
+
+
+object HS256 extends Alg(name = "HS256"): 
+    def signer[F[_]](key: SecretKey)(using S: Sync[F]): Signer[F] =  
+        new Signer[F] {
+            type Repr = HS256.type
+            def algo: Repr = HS256
+        
+            def sign(data: Binary): F[Binary] = 
+                for
+                   mac <- S.delay(Mac.getInstance("HmacSHA256"))
+                    _  <- S.delay(mac.init(key))
+                   sig <- S.delay(mac.doFinal(data.toArray))
+                yield Binary(sig)
+        }
+
+    def verifier[F[_]](key: SecretKey)(using S: Sync[F]): Verifier[F] =
+        new Verifier[F] {
+            type Repr = HS256.type
+            def algo: Repr = HS256
+        
+            def verify(signature: Binary, data: Binary): F[Boolean] = {
+                for 
+                   mac <- S.delay(Mac.getInstance("HmacSHA256"))
+                    _  <- S.delay(mac.init(key))
+                   sig <- S.delay(mac.doFinal(data.toArray))
+                   v   <- S.delay(MessageDigest.isEqual(sig, signature.toArray))                     
+                yield v
+            }
+        }
+end HS256
 
 object RS256 extends Alg(name = "RS256"): 
     
