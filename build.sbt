@@ -1,6 +1,6 @@
 import Settings._
 
-val versionV = "0.0.4"
+val versionV = "0.0.5"
 
 inThisBuild(
   scalaVersion := Versions.dotty
