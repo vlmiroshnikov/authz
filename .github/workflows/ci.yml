@@ -55,13 +55,8 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
 
-      - name: Debug gpg
-        run: export GPG_TTY=$(tty)    
-
       - name: Import signing key
-        run: echo $PGP_SECRET | base64 -d | gpg --import
+        run: echo $PGP_SECRET | base64 -d | gpg --batch --import --verbose
 
-      - env:
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      - name: Release 
         run: sbt ++${{ matrix.scala }} release

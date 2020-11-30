@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.0.7"
+val versionV = "0.1.0"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -24,11 +24,11 @@ ThisBuild / githubWorkflowPublish := Seq(
     )
   )
 )
-ThisBuild / credentials += Credentials(
-  "Sonatype Nexus Repository Manager", 
-  "oss.sonatype.org", 
-  sys.env.getOrElse("SONATYPE_USERNAME", ""),
-  sys.env.getOrElse("SONATYPE_PASSWORD", ""))
+ThisBuild / credentials += Credentials("Sonatype Nexus Repository Manager",
+                                       "oss.sonatype.org",
+                                       sys.env.getOrElse("SONATYPE_USERNAME", ""),
+                                       sys.env.getOrElse("SONATYPE_PASSWORD", "")
+)
 
 ThisBuild / scmInfo := Some(
   ScmInfo(url("https://github.com/vmiroshnikov/authz"), "git@github.com:vmiroshnikov/authz.git")
@@ -89,9 +89,5 @@ lazy val `test` = project
   .dependsOn(`authz-core`, `authz-circe`)
   .settings(
     name                 := "authz-test",
-    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value)),
-    publish              := {},
-    publishLocal         := {},
-    publishArtifact      := false,
-    skip in publish      := true
+    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value))
   )
