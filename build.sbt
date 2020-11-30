@@ -51,7 +51,8 @@ def publishSettings = Seq(
   licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
   sonatypeProjectHosting := Some(GitHubHosting("vlmiroshnikov", "authz", "vlmiroshnikov@gmai.com")),
   homepage               := Some(url("https://github.com/vmiroshnikov/authz")),
-  publishTo              := sonatypePublishToBundle.value
+  publishTo              := sonatypePublishToBundle.value,
+  useGpgPinentry         := Option(System.getenv("PGP_PASSPHRASE")).isDefined
 )
 
 lazy val authz = project
