@@ -1,7 +1,7 @@
 import sbt._
 
 object Versions {
-  val dotty  = "3.0.0-M1"
+  val dotty  = "3.0.0-M2"
   val circe  = "0.13.0"
   val codecs = "1.15"
   val cats   = "2.2.0"
@@ -10,7 +10,6 @@ object Versions {
 object Settings {
   lazy val circe = Seq(
     "io.circe" %% "circe-core",
-    "io.circe" %% "circe-generic",
     "io.circe" %% "circe-parser"
   ).map(_ % Versions.circe)
 

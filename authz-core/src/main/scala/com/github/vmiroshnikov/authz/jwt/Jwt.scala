@@ -13,11 +13,11 @@ import cats.implicits._
 
 trait Alg(val name: String)
 
-case class Jwt(header: String, claims: String, signature: String) 
+case class RawJwt(header: String, claims: String, signature: String) 
 
-object Jwt {
-    given Show[Jwt]:
-        def show(jwt: Jwt): String = 
+object RawJwt {
+    given Show[RawJwt]:
+        def show(jwt: RawJwt): String = 
             jwt.header + "." + jwt.claims + "." + jwt.signature 
 }
 
@@ -32,46 +32,48 @@ object Audience {
 }
 
 trait Header{
-    def `type`: JWTType //Type, which will almost always default to "JWT"
-    def contentType: Option[String] // Optional header, preferably not used
-    def critical: Option[NonEmptyList[String]] //Headers not to ignore, they must be understood by the JWT implementation
-    def jku: Option[String] //Resource set for JWK
-    def jwk: Option[String] //JWK
-    def kid: Option[String] //JWK key hint
-    def x5u: Option[String] //The "x5c" (X.509 certificate chain) Header Parameter
+    def `type`: JWTType 
+    def contentType: Option[String] 
+    def critical: Option[NonEmptyList[String]] 
+    def jku: Option[String] 
+    def jwk: Option[String] 
+    def kid: Option[String] 
+    def x5u: Option[String] 
     def algorithm: String
 }
 
 case class StdHeader(
     `type`: JWTType = JWTType.JWT,
     algorithm: String,
-    contentType: Option[String] = None, // Optional header, preferably not used
-    critical: Option[NonEmptyList[String]] = None, //Headers not to ignore, they must be understood by the JWT implementation
-    jku: Option[String] = None, //Resource set for JWK
-    jwk: Option[String] = None, //JWK
-    kid: Option[String] = None, //JWK key hint
-    x5u: Option[String] = None, //The "x5c" (X.509 certificate chain) Header Parameter
+    contentType: Option[String] = None, 
+    critical: Option[NonEmptyList[String]] = None, 
+    jku: Option[String] = None, 
+    jwk: Option[String] = None, 
+    kid: Option[String] = None, 
+    x5u: Option[String] = None, 
 ) extends Header
 
 trait Claims{
     def issuer: Option[String]
     def subject: Option[String]
-    def audience: Option[Audience]       //case-sensitive
+    def audience: Option[Audience]       
     def expiration: Option[Instant]
-    def notBefore: Option[Instant]          // IEEE Std 1003.1, 2013 Edition time in seconds
-    def issuedAt: Option[Instant]          // IEEE Std 1003.1, 2013 Edition time in seconds
-    def jwtId: Option[String]               //Case sensitive, and in our implementation, secure enough using UUIDv4
+    def notBefore: Option[Instant]          
+    def issuedAt: Option[Instant]          
+    def jwtId: Option[String]               
 }
 
 case class StdClaims(
     val issuer: Option[String] = None,
     val subject: Option[String] = None,
-    val audience: Option[Audience] = None,      //case-sensitive
+    val audience: Option[Audience] = None,      
     val expiration: Option[Instant] = None,
-    val notBefore: Option[Instant] = None,         // IEEE Std 1003.1, 2013 Edition time in seconds
-    val issuedAt: Option[Instant] = None,          // IEEE Std 1003.1, 2013 Edition time in seconds
-    val jwtId: Option[String]= None               //Case sensitive, and in our implementation, secure enough using UUIDv4
+    val notBefore: Option[Instant] = None,         
+    val issuedAt: Option[Instant] = None,          
+    val jwtId: Option[String]= None               
 ) extends Claims
+
+case class Jwt[H <: Header, C <: Claims](header: H, claims: C, signature: Binary)
 
 opaque type Binary = Array[Byte]
 
@@ -111,7 +113,7 @@ def buildAndSign[F[_], H <: Header, C <: Claims](header: H, claims: C)
         (using E: MonadError[F, Throwable],
             signer: Signer[F], 
             headerEnc: AuxEncoder[H], 
-            claimsEnc: AuxEncoder[C]): F[Jwt] = {
+            claimsEnc: AuxEncoder[C]): F[RawJwt] = {
 
     def asciiBytes(s: String): Binary = Binary(s.getBytes(StandardCharsets.US_ASCII))
     def encodeToString(bin: Binary) = E.fromTry(Try(Base64.encodeBase64URLSafeString(bin.toArray)))
@@ -122,10 +124,8 @@ def buildAndSign[F[_], H <: Header, C <: Claims](header: H, claims: C)
         toSign          <- E.pure(headerBin + "." + claimsBin)
         signature       <- signer.sign(asciiBytes(toSign))
         signatureBin    <- encodeToString(signature)
-    yield Jwt(headerBin, claimsBin, signatureBin)
+    yield RawJwt(headerBin, claimsBin, signatureBin)
 }
-
-
 
 case class ParseResult[H <: Header, C <: Claims](header: H, claims: C, signature: Binary, signedPart: String)
 
