@@ -1,5 +1,9 @@
 name: Debug gpg
 
+on:
+  push:
+    branches: ['*']
+
 env:
   PGP_SECRET: ${{ secrets.PGP_SECRET }}
 
