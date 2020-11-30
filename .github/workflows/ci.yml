@@ -55,8 +55,10 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
 
+      - name: Debug gpg
+        run: export GPG_TTY=$(tty)    
+
       - name: Import signing key
-        run: export GPG_TTY=$(tty)
         run: echo $PGP_SECRET | base64 -d | gpg --import
 
       - env:
