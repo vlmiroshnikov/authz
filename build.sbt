@@ -1,21 +1,21 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.0.6"
+val versionV = "0.0.7"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
 
 ThisBuild / githubWorkflowTargetTags           ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
-ThisBuild / githubWorkflowPublish               := Seq(WorkflowStep.Sbt(List("ci-release")))
+ThisBuild / githubWorkflowPublish               := Seq(WorkflowStep.Sbt(List("release")))
 ThisBuild / githubWorkflowJavaVersions          := Seq("adopt@1.11")
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("compile"))
 )
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
-    List("ci-release"),
+    List("release"),
     env = Map(
       "PGP_PASSPHRASE"    -> "${{ secrets.PGP_PASSPHRASE }}",
       "PGP_SECRET"        -> "${{ secrets.PGP_SECRET }}",
@@ -24,6 +24,7 @@ ThisBuild / githubWorkflowPublish := Seq(
     )
   )
 )
+ThisBuild / credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", sys.env.get("SONATYPE_USERNAME"), sys.env.get("SONATYPE_PASSWORD"))
 
 ThisBuild / scmInfo := Some(
   ScmInfo(url("https://github.com/vmiroshnikov/authz"), "git@github.com:vmiroshnikov/authz.git")
