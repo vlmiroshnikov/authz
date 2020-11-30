@@ -23,5 +23,5 @@ jobs:
           fetch-depth: 0
 
       - name: Import signing key
-        run: echo $PGP_SECRET | base64 -d | gpg --import --verbose
+        run: echo $PGP_SECRET | base64 -d | gpg --batch --import --verbose
 
