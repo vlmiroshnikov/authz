@@ -24,7 +24,11 @@ ThisBuild / githubWorkflowPublish := Seq(
     )
   )
 )
-ThisBuild / credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", sys.env.get("SONATYPE_USERNAME"), sys.env.get("SONATYPE_PASSWORD"))
+ThisBuild / credentials += Credentials(
+  "Sonatype Nexus Repository Manager", 
+  "oss.sonatype.org", 
+  sys.env.getOrElse("SONATYPE_USERNAME", ""),
+  sys.env.getOrElse("SONATYPE_PASSWORD", ""))
 
 ThisBuild / scmInfo := Some(
   ScmInfo(url("https://github.com/vmiroshnikov/authz"), "git@github.com:vmiroshnikov/authz.git")
