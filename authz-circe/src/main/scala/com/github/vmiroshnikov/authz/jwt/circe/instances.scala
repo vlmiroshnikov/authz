@@ -60,9 +60,9 @@ given claimsEncoder[F[_]] as Encoder[StdClaims]:
         (Issuer, c.issuer.asJson), 
         (Subject, c.subject.asJson), 
         (Audience, c.audience.map(_.toList).asJson), 
-        (Expiration, c.expiration.asJson), 
-        (NotBefore, c.notBefore.asJson), 
-        (IssuedAt, c.issuedAt.asJson), 
+        (Expiration, c.expiration.map(_.getEpochSecond).asJson), 
+        (NotBefore, c.notBefore.map(_.getEpochSecond).asJson), 
+        (IssuedAt, c.issuedAt.map(_.getEpochSecond).asJson), 
         (JwtId, c.jwtId.asJson))
 end claimsEncoder
 
@@ -95,10 +95,9 @@ given Decoder[StdClaims] = Decoder.instance { c=>
 }
 
 given [A](using enc: Encoder[A]) as AuxEncoder[A]:
-  given printer as Printer = Printer(true, "")
   def encode(a: A): Either[com.github.vmiroshnikov.authz.jwt.EncodingFailure.type, Binary] = 
-    val pp = printer.print(a.asJson(enc))
-    Right(Binary(pp.getBytes(StandardCharsets.UTF_8)))
+    val data = a.asJson(enc).noSpaces
+    Right(Binary(data.getBytes(StandardCharsets.UTF_8)))
 
 given [A](using dec: Decoder[A]) as AuxDecoder[A]:
   import io.circe.parser.parse
