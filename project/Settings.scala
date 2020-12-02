@@ -19,7 +19,7 @@ object Settings {
   ).map(_ % Versions.cats)
 
   lazy val codecs = Seq("commons-codec" % "commons-codec" % Versions.codecs)
-  lazy val test   = Seq("org.scalatest" %% "scalatest" % "3.2.2" % "test")
+  lazy val test   = Seq("org.scalameta" % "munit_3.0.0-M2" % "0.7.19" % Test)
 
   val authzCoreDeps  = cats ++ codecs ++ test
   val authzCirceDeps = authzCoreDeps ++ circe
