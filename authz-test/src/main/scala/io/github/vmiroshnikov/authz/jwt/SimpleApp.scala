@@ -1,13 +1,13 @@
-package com.github.vmiroshnikov.authz.jwt.test
+package io.github.vmiroshnikov.authz.jwt.test
 
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.implicits._
 
-import com.github.vmiroshnikov.authz.jwt.{given, _}
-import com.github.vmiroshnikov.authz.jwt.impl.RS256
-import com.github.vmiroshnikov.authz.jwt.circe.{given, _}
-import com.github.vmiroshnikov.authz.utils._
-import com.github.vmiroshnikov.authz._
+import io.github.vmiroshnikov.authz.jwt.{given, _}
+import io.github.vmiroshnikov.authz.jwt.impl.RS256
+import io.github.vmiroshnikov.authz.jwt.circe.{given, _}
+import io.github.vmiroshnikov.authz.utils._
+import io.github.vmiroshnikov.authz._
 
 object SimpleApp extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
