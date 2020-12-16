@@ -97,10 +97,9 @@ given Decoder[StdClaims] = Decoder.instance { c=>
 given [A](using enc: Encoder[A]) as AuxEncoder[A]:
   private val printer = Printer(dropNullValues = true, indent = "")
 
-
-def encode(a: A): Either[io.github.vmiroshnikov.authz.jwt.EncodingFailure.type, Binary] = 
-  val data = a.asJson(enc).printWith(printer)
-  Right(Binary(data.getBytes(StandardCharsets.UTF_8)))
+  def encode(a: A): Either[io.github.vmiroshnikov.authz.jwt.EncodingFailure.type, Binary] = 
+    val data = a.asJson(enc).printWith(printer)
+    Right(Binary(data.getBytes(StandardCharsets.UTF_8)))
 
 given [A](using dec: Decoder[A]) as AuxDecoder[A]:
   import io.circe.parser.parse
