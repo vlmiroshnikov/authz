@@ -1,4 +1,4 @@
-package com.github.vmiroshnikov.authz.jwt
+package io.github.vmiroshnikov.authz.jwt
 
 import org.apache.commons.codec.binary.Base64
 import java.nio.charset.StandardCharsets
