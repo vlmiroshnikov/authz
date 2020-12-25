@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.1.6"
+val versionV = "0.1.7"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -58,7 +58,7 @@ def publishSettings = Seq(
 lazy val authz = project
   .in(file("."))
   .settings(scalaVersion := Versions.dotty)
-  .aggregate(`authz-core`, `authz-circe`)
+  .aggregate(`authz-core`, `authz-circe`, example)
   .settings(
     publish         := {},
     publishLocal    := {},
@@ -71,7 +71,8 @@ lazy val `authz-core` = project
   .settings(
     name                 := "authz-core",
     scalaVersion         := Versions.dotty,
-    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value))
+    testFrameworks       += new TestFramework("munit.Framework"),
+    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value)) ++ munit
   )
   .settings(publishSettings)
 
@@ -81,14 +82,16 @@ lazy val `authz-circe` = project
   .settings(
     name                 := "authz-circe",
     scalaVersion         := Versions.dotty,
-    libraryDependencies ++= authzCirceDeps.map(_.withDottyCompat(scalaVersion.value))
+    testFrameworks       += new TestFramework("munit.Framework"),
+    libraryDependencies ++= authzCirceDeps.map(_.withDottyCompat(scalaVersion.value)) ++ munit
   )
   .settings(publishSettings)
 
-lazy val `test` = project
+lazy val example = project
   .in(file("authz-test"))
   .dependsOn(`authz-core`, `authz-circe`)
   .settings(
-    name                 := "authz-test",
-    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value))
+    name                 := "authz-example",
+    testFrameworks       += new TestFramework("munit.Framework"),
+    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value)) ++ munit
   )

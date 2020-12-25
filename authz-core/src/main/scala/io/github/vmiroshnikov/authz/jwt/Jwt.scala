@@ -15,11 +15,11 @@ trait Alg(val name: String)
 
 case class RawJwt(header: String, claims: String, signature: String) 
 
-object RawJwt {
-    given Show[RawJwt]:
+object RawJwt:
+    given Show[RawJwt] with {
         def show(jwt: RawJwt): String = 
             jwt.header + "." + jwt.claims + "." + jwt.signature 
-}
+    }
 
 enum JWTType(val name: String) {
     case JWT extends JWTType("JWT")
@@ -149,7 +149,7 @@ def parse[F[_], H <: Header, C <: Claims](jwt: String)(
         case lst => E.raiseError(InvalidJWTFormat(s"Parts ${lst.length}"))
 }
 
-extension (c: Claims):
+extension (c: Claims)
     def isNotExpired(now: Instant): Boolean = c.expiration.forall(e => now.isBefore(e))
     def isAfterNBF(now: Instant): Boolean   = c.notBefore.forall(e => now.isAfter(e))
     def isValidIssued(now: Instant): Boolean = c.issuedAt.forall(e => !now.isBefore(e))

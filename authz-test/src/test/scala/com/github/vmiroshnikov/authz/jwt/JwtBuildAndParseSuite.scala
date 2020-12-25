@@ -8,7 +8,7 @@ class JwtBuildAndParseSuite extends munit.FunSuite {
 
   type R[A] = Either[Throwable, A]
 
-  test("sign with RSA".fail) {
+  test("sign with RSA") {
     fail("")
   }
 }

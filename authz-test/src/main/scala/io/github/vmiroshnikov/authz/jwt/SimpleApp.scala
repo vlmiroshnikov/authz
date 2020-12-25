@@ -14,8 +14,8 @@ object SimpleApp extends IOApp {
     
     val keyPair = JCAHelper.generateRSAKeyPair
 
-    given s as Signer[IO] = RS256.signer[IO](keyPair.getPrivate())
-    given v as Verifier[IO] = RS256.verifier[IO](keyPair.getPublic())
+    given s: Signer[IO] = RS256.signer[IO](keyPair.getPrivate())
+    given v: Verifier[IO] = RS256.verifier[IO](keyPair.getPublic())
     for
       jwt <- buildAndSign[IO, StdHeader, StdClaims](StdHeader(algorithm = v.algo.name), StdClaims())
       _   <- IO.delay(println(jwt.show))
