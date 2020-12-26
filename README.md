@@ -3,9 +3,8 @@
 
 ## Install 
 ```
-libraryDependencies += "io.github.vlmiroshnikov" % "authz-core_3.0.0-M2" % "<version>" 
-libraryDependencies += "io.github.vlmiroshnikov" % "authz-circe_3.0.0-M2" % "<version>"   //  marshalling with circe 
-
+libraryDependencies += "io.github.vlmiroshnikov" %% "authz-core" % "<version>" 
+libraryDependencies += "io.github.vlmiroshnikov" %% "authz-circe" % "<version>" //  marshalling with circe 
 ```
 
 ## Example
