@@ -4,7 +4,6 @@ import cats.implicits._
 import io.github.vmiroshnikov.authz.jwt.{given, _}
 import io.github.vmiroshnikov.authz.jwt.impl.RS256
 import io.github.vmiroshnikov.authz.utils._
-import io.github.vmiroshnikov.authz._
 import io.github.vmiroshnikov.authz.jwt.circe.{given, _}
 
 class JwtBuildAndParseSuite extends munit.FunSuite {
