@@ -20,6 +20,7 @@ object Settings {
 
   lazy val codecs = Seq("commons-codec" % "commons-codec" % Versions.codecs)
   lazy val munit  = Seq("org.scalameta" %% "munit" % "0.7.20" % Test)
+  lazy val munitCE = Seq("org.typelevel" %% "munit-cats-effect-2" % "0.12.0" % Test)
 
   val authzCoreDeps  = cats ++ codecs
   val authzCirceDeps = authzCoreDeps ++ circe

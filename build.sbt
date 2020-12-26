@@ -93,5 +93,5 @@ lazy val example = project
   .settings(
     name                 := "authz-example",
     testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= authzCoreDeps.map(_.withDottyCompat(scalaVersion.value)) ++ munit
+    libraryDependencies ++= (cats).map(_.withDottyCompat(scalaVersion.value)) ++ munit
   )
