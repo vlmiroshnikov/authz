@@ -18,5 +18,4 @@ object Settings {
   lazy val catsEffect = Seq("org.typelevel" %% "cats-effect").map(_ % Versions.cats)
   lazy val codecs  = Seq("commons-codec" % "commons-codec" % Versions.codecs)
   lazy val munit   = Seq("org.scalameta" %% "munit" % Versions.munit % Test)
-  lazy val munitCE = Seq("org.typelevel" %% "munit-cats-effect-2" % "0.12.0" % Test)
 }
