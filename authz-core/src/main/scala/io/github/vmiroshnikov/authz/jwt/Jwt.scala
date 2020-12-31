@@ -101,11 +101,9 @@ case object InvalidSignature extends Exception("Invalid signature") with NoStack
 case class InvalidJWTFormat(msg: String) extends Exception("Invalid JWT format: "  + msg) with NoStackTrace
 
 
-// todo rename into intermediate encoder
 trait AuxEncoder[A]:
     def encode(a: A): Either[EncodingFailure.type, Binary]
 
-// todo rename into intermediate encoder
 trait AuxDecoder[A]:
     def decode(a: Binary): Either[DecodingFailure.type, A]
 
@@ -150,8 +148,8 @@ def parse[F[_], H <: Header, C <: Claims](jwt: String)(
 }
 
 extension (c: Claims)
-    def isNotExpired(now: Instant): Boolean = c.expiration.forall(e => now.isBefore(e))
-    def isAfterNBF(now: Instant): Boolean   = c.notBefore.forall(e => now.isAfter(e))
+    def isNotExpired(now: Instant): Boolean  = c.expiration.forall(e => now.isBefore(e))
+    def isAfterNBF(now: Instant): Boolean    = c.notBefore.forall(e => now.isAfter(e))
     def isValidIssued(now: Instant): Boolean = c.issuedAt.forall(e => !now.isBefore(e))
     
 

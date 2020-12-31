@@ -72,7 +72,7 @@ lazy val `authz-core` = project
     name                 := "authz-core",
     scalaVersion         := Versions.dotty,
     testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (cats ++ codecs).map(_.withDottyCompat(scalaVersion.value)) ++ munit
+    libraryDependencies ++= (cats).map(_.withDottyCompat(scalaVersion.value)) ++ codecs ++ munit
   )
   .settings(publishSettings)
 
@@ -83,7 +83,7 @@ lazy val `authz-circe` = project
     name                 := "authz-circe",
     scalaVersion         := Versions.dotty,
     testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (cats ++ circe).map(_.withDottyCompat(scalaVersion.value)) ++ munit
+    libraryDependencies ++= (circe ++ cats).map(_.withDottyCompat(scalaVersion.value)) ++ munit 
   )
   .settings(publishSettings)
 
@@ -93,5 +93,5 @@ lazy val example = project
   .settings(
     name                 := "authz-example",
     testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (cats).map(_.withDottyCompat(scalaVersion.value)) ++ munit
+    libraryDependencies ++= munit ++ (catsEffect).map(_.withDottyCompat(scalaVersion.value)),
   )
