@@ -58,7 +58,7 @@ def publishSettings = Seq(
 lazy val authz = project
   .in(file("."))
   .settings(scalaVersion := Versions.dotty)
-  .aggregate(`authz-core`, `authz-circe`, example)
+  .aggregate(`authz-core`, `authz-circe`)
   .settings(
     publish         := {},
     publishLocal    := {},
