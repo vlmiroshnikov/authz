@@ -1,11 +1,11 @@
 import sbt._
 
 object Versions {
-  val dotty  = "3.0.0-M3"
+  val dotty  = "3.0.0-RC1"
   val circe  = "0.13.0"
   val codecs = "1.15"
   val cats   = "2.3.1"
-  val munit  = "0.7.20"
+  val munit  = "0.7.22"
 }
 
 object Settings {
