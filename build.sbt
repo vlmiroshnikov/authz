@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.1.9"
+val versionV = "0.2.0"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -63,7 +63,7 @@ lazy val authz = project
     publish         := {},
     publishLocal    := {},
     publishArtifact := false,
-    skip in publish := true
+    publish / skip  := true
   )
 
 lazy val `authz-core` = project
@@ -72,7 +72,7 @@ lazy val `authz-core` = project
     name         := "authz-core",
     scalaVersion := Versions.dotty,
     testFrameworks += new TestFramework("munit.Framework"),
-    libraryDependencies ++= cats.map(_.withDottyCompat(scalaVersion.value)) ++ codecs ++ munit
+    libraryDependencies ++= cats ++ codecs ++ munit
   )
   .settings(publishSettings)
 
@@ -83,7 +83,7 @@ lazy val `authz-circe` = project
     name         := "authz-circe",
     scalaVersion := Versions.dotty,
     testFrameworks += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (circe ++ cats).map(_.withDottyCompat(scalaVersion.value)) ++ munit
+    libraryDependencies ++= circe ++ cats ++ munit
   )
   .settings(publishSettings)
 
@@ -93,5 +93,5 @@ lazy val example = project
   .settings(
     name := "authz-example",
     testFrameworks += new TestFramework("munit.Framework"),
-    libraryDependencies ++= munit ++ catsEffect.map(_.withDottyCompat(scalaVersion.value))
+    libraryDependencies ++= munit ++ catsEffect
   )
