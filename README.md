@@ -37,8 +37,8 @@ object SimpleApp extends IOApp {
 ```
 
 
-## Dependecies 
-
-* cats 2.3.1
+## Dependencies
+* scala 3.0.0 RC3
+* cats 2.6.0
 * apache common-codecs 1.15
-* circe 0.13.0
+* circe 0.14.0-M6
