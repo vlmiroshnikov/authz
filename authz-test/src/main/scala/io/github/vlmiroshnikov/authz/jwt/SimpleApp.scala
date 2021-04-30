@@ -1,15 +1,5 @@
-## Simple JWT scala 3 library 
+package io.github.vlmiroshnikov.authz.jwt
 
-
-## Install 
-```
-libraryDependencies += "io.github.vlmiroshnikov" %% "authz-core" % "<version>" 
-libraryDependencies += "io.github.vlmiroshnikov" %% "authz-circe" % "<version>" //  marshalling with circe 
-```
-
-## Example
-
-```
 import cats.effect._
 import cats.implicits._
 
@@ -37,11 +27,3 @@ object SimpleApp extends IOApp.Simple {
     yield ()
   }
 }
-```
-
-
-## Dependencies
-* scala 3.0.0 RC3
-* cats 2.6.0
-* apache common-codecs 1.15
-* circe 0.14.0-M6

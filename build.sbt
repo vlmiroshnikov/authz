@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.1.8"
+val versionV = "0.2.0"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -58,21 +58,21 @@ def publishSettings = Seq(
 lazy val authz = project
   .in(file("."))
   .settings(scalaVersion := Versions.dotty)
-  .aggregate(`authz-core`, `authz-circe`, example)
+  .aggregate(`authz-core`, `authz-circe`)
   .settings(
     publish         := {},
     publishLocal    := {},
     publishArtifact := false,
-    skip in publish := true
+    publish / skip  := true
   )
 
 lazy val `authz-core` = project
   .in(file("authz-core"))
   .settings(
-    name                 := "authz-core",
-    scalaVersion         := Versions.dotty,
-    testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (cats).map(_.withDottyCompat(scalaVersion.value)) ++ codecs ++ munit
+    name         := "authz-core",
+    scalaVersion := Versions.dotty,
+    testFrameworks += new TestFramework("munit.Framework"),
+    libraryDependencies ++= cats ++ codecs ++ munit
   )
   .settings(publishSettings)
 
@@ -80,10 +80,10 @@ lazy val `authz-circe` = project
   .in(file("authz-circe"))
   .dependsOn(`authz-core`)
   .settings(
-    name                 := "authz-circe",
-    scalaVersion         := Versions.dotty,
-    testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= (circe ++ cats).map(_.withDottyCompat(scalaVersion.value)) ++ munit 
+    name         := "authz-circe",
+    scalaVersion := Versions.dotty,
+    testFrameworks += new TestFramework("munit.Framework"),
+    libraryDependencies ++= circe ++ cats ++ munit
   )
   .settings(publishSettings)
 
@@ -91,7 +91,7 @@ lazy val example = project
   .in(file("authz-test"))
   .dependsOn(`authz-core`, `authz-circe`)
   .settings(
-    name                 := "authz-example",
-    testFrameworks       += new TestFramework("munit.Framework"),
-    libraryDependencies ++= munit ++ (catsEffect).map(_.withDottyCompat(scalaVersion.value)),
+    name := "authz-example",
+    testFrameworks += new TestFramework("munit.Framework"),
+    libraryDependencies ++= munit ++ catsEffect
   )
