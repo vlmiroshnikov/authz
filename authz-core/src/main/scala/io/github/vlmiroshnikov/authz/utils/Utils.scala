@@ -1,4 +1,4 @@
-package io.github.vmiroshnikov.authz.utils
+package io.github.vlmiroshnikov.authz.utils
 
 import java.security.KeyPairGenerator
 import java.security.KeyPair

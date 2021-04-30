@@ -1,10 +1,10 @@
-package io.github.vmiroshnikov.authz.jwt
+package io.github.vlmiroshnikov.authz.jwt
 
 import cats.implicits._
-import io.github.vmiroshnikov.authz.jwt.{given, _}
-import io.github.vmiroshnikov.authz.jwt.impl.RS256
-import io.github.vmiroshnikov.authz.utils._
-import io.github.vmiroshnikov.authz.jwt.circe.{given, _}
+import io.github.vlmiroshnikov.authz.jwt.{given, _}
+import io.github.vlmiroshnikov.authz.jwt.impl.RS256
+import io.github.vlmiroshnikov.authz.utils._
+import io.github.vlmiroshnikov.authz.jwt.circe.{given, _}
 
 class JwtBuildAndParseSuite extends munit.FunSuite {
 
@@ -21,7 +21,7 @@ class JwtBuildAndParseSuite extends munit.FunSuite {
       v   <- verify[R, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
     yield v
 
-    assertEquals(result, Right(true))
+    assertEquals(result, true.asRight)
   }
 
   test("verify with wrong public key RS256") {
@@ -36,6 +36,6 @@ class JwtBuildAndParseSuite extends munit.FunSuite {
       v   <- verify[R, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
     yield v
 
-    assertEquals(result, Right(false))
+    assertEquals(result, false.asRight)
   }
 }
