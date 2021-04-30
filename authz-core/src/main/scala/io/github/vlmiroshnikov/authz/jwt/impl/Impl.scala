@@ -1,11 +1,11 @@
-package io.github.vmiroshnikov.authz.jwt.impl
+package io.github.vlmiroshnikov.authz.jwt.impl
 
 import java.security.{PrivateKey, PublicKey, Signature, MessageDigest}
 import javax.crypto.{KeyGenerator, Mac, SecretKey}
 
 import cats.MonadError
 import cats.implicits._
-import io.github.vmiroshnikov.authz.jwt._
+import io.github.vlmiroshnikov.authz.jwt._
 
 
 object HS256 extends Alg(name = "HS256"): 

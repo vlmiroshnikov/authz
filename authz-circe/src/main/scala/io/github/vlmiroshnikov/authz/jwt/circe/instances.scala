@@ -1,4 +1,4 @@
-package io.github.vmiroshnikov.authz.jwt.circe
+package io.github.vlmiroshnikov.authz.jwt.circe
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
@@ -11,7 +11,7 @@ import cats.syntax._
 import cats.data.NonEmptyList
 import cats.implicits._
 
-import io.github.vmiroshnikov.authz.jwt._
+import io.github.vlmiroshnikov.authz.jwt._
 
 object ClaimsKeys {
   val Issuer: String     = "iss"
@@ -99,15 +99,15 @@ given Decoder[StdClaims] = Decoder.instance { c=>
 given [A](using enc: Encoder[A]): AuxEncoder[A] with {
   private val printer = Printer(dropNullValues = true, indent = "")
 
-  def encode(a: A): Either[io.github.vmiroshnikov.authz.jwt.EncodingFailure.type, Binary] = 
+  def encode(a: A): Either[io.github.vlmiroshnikov.authz.jwt.EncodingFailure.type, Binary] =
     val data = a.asJson(enc).printWith(printer)
     Right(Binary(data.getBytes(StandardCharsets.UTF_8)))
 }
 
 given [A](using dec: Decoder[A]): AuxDecoder[A] with {
   import io.circe.parser.parse
-  def decode(bin: Binary): Either[io.github.vmiroshnikov.authz.jwt.DecodingFailure.type, A] = 
+  def decode(bin: Binary): Either[io.github.vlmiroshnikov.authz.jwt.DecodingFailure.type, A] =
     parse(new String(bin.toArray))
       .flatMap(_.as[A])
-      .leftMap(e => io.github.vmiroshnikov.authz.jwt.DecodingFailure)
+      .leftMap(e => io.github.vlmiroshnikov.authz.jwt.DecodingFailure)
 }

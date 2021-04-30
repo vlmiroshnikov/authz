@@ -13,10 +13,10 @@ libraryDependencies += "io.github.vlmiroshnikov" %% "authz-circe" % "<version>" 
 import cats.effect._
 import cats.implicits._
 
-import io.github.vmiroshnikov.authz.jwt.{given, _}
-import io.github.vmiroshnikov.authz.jwt.impl.RS256
-import io.github.vmiroshnikov.authz.jwt.circe.{given, _}
-import io.github.vmiroshnikov.authz.utils._
+import io.github.vlmiroshnikov.authz.jwt.{given, _}
+import io.github.vlmiroshnikov.authz.jwt.impl.RS256
+import io.github.vlmiroshnikov.authz.jwt.circe.{given, _}
+import io.github.vlmiroshnikov.authz.utils._
 
 object SimpleApp extends IOApp.Simple {
 
