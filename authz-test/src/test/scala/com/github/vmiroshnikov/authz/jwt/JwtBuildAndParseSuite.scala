@@ -21,7 +21,7 @@ class JwtBuildAndParseSuite extends munit.FunSuite {
       v   <- verify[R, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
     yield v
 
-    assertEquals(result, Right(true))
+    assertEquals(result, true.asRight)
   }
 
   test("verify with wrong public key RS256") {
@@ -36,6 +36,6 @@ class JwtBuildAndParseSuite extends munit.FunSuite {
       v   <- verify[R, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
     yield v
 
-    assertEquals(result, Right(false))
+    assertEquals(result, false.asRight)
   }
 }
