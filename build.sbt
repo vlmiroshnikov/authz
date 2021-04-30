@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.2.0"
+val versionV = "0.2.1"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -31,10 +31,10 @@ ThisBuild / credentials += Credentials("Sonatype Nexus Repository Manager",
 )
 
 ThisBuild / scmInfo := Some(
-  ScmInfo(url("https://github.com/vmiroshnikov/authz"), "git@github.com:vmiroshnikov/authz.git")
+  ScmInfo(url("https://github.com/vlmiroshnikov/authz"), "git@github.com:vlmiroshnikov/authz.git")
 )
 ThisBuild / developers ++= List(
-  "vmiroshnikov" -> "Vyacheslav Miroshnikov"
+  "vlmiroshnikov" -> "Vyacheslav Miroshnikov"
 ).map { case (username, fullName) =>
   Developer(username, fullName, s"@$username", url(s"https://github.com/$username"))
 }
@@ -50,7 +50,7 @@ def publishSettings = Seq(
   publishMavenStyle   := true,
   licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
   sonatypeProjectHosting := Some(GitHubHosting("vlmiroshnikov", "authz", "vlmiroshnikov@gmai.com")),
-  homepage               := Some(url("https://github.com/vmiroshnikov/authz")),
+  homepage               := Some(url("https://github.com/vlmiroshnikov/authz")),
   publishTo              := sonatypePublishToBundle.value,
   useGpgPinentry         := Option(System.getenv("PGP_PASSPHRASE")).isDefined
 )
