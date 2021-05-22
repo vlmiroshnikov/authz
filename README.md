@@ -41,7 +41,7 @@ object SimpleApp extends IOApp.Simple {
 
 
 ## Dependencies
-* scala 3.0.0 RC3
+* scala 3.0.0
 * cats 2.6.0
 * apache common-codecs 1.15
-* circe 0.14.0-M6
+* circe 0.14.0-M7
