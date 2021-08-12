@@ -21,9 +21,8 @@ object SimpleApp extends IOApp.Simple {
       jwt <- buildAndSign[IO, StdHeader, StdClaims](StdHeader(algorithm = v.algo.name), StdClaims())
       _   <- IO.println(jwt.show)
       res <- parse[IO, StdHeader, StdClaims](jwt.show)
-      v   <- verify[IO, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
+      vr  <- verify[IO, StdHeader, StdClaims](res.header, res.claims, res.signature, res.signedPart)
       _   <- IO.println(res.toString)
-      _   <- IO.println("Result: " + v.show)
     yield ()
   }
 }
