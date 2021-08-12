@@ -13,10 +13,10 @@ libraryDependencies += "io.github.vlmiroshnikov" %% "authz-circe" % "<version>" 
 import cats.effect._
 import cats.implicits._
 
-import io.github.vlmiroshnikov.authz.jwt.{given, _}
+import io.github.vlmiroshnikov.authz.jwt.{given, *}
 import io.github.vlmiroshnikov.authz.jwt.impl.RS256
-import io.github.vlmiroshnikov.authz.jwt.circe.{given, _}
-import io.github.vlmiroshnikov.authz.utils._
+import io.github.vlmiroshnikov.authz.jwt.circe.{given, *}
+import io.github.vlmiroshnikov.authz.utils.*
 
 object SimpleApp extends IOApp.Simple {
 
@@ -41,7 +41,7 @@ object SimpleApp extends IOApp.Simple {
 
 
 ## Dependencies
-* scala 3.0.0
-* cats 2.6.0
+* scala 3.0.1
+* cats 2.6.1
 * apache common-codecs 1.15
-* circe 0.14.0-M7
+* circe 0.14.1
