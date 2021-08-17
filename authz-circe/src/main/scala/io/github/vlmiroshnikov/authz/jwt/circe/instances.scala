@@ -2,16 +2,13 @@ package io.github.vlmiroshnikov.authz.jwt.circe
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
-
 import scala.util.Try
-import io.circe._
-import io.circe.DecodingFailure
-import io.circe.syntax._
-import cats.syntax._
+import cats.syntax.all.*
 import cats.data.NonEmptyList
-import cats.implicits._
+import io.circe.{ DecodingFailure as CDecodingFailure, * }
+import io.circe.syntax.*
 
-import io.github.vlmiroshnikov.authz.jwt._
+import io.github.vlmiroshnikov.authz.jwt.*
 
 object ClaimsKeys {
   val Issuer: String     = "iss"
@@ -23,7 +20,7 @@ object ClaimsKeys {
   val JwtId: String      = "jti"
 }
 
-given [F[_]]: Encoder[StdHeader] with
+given Encoder[StdHeader] with
 
   def apply(a: StdHeader): Json =
     Json.obj(
@@ -41,7 +38,7 @@ given Decoder[JWTType] = Decoder.decodeString.emap { s =>
   if s == "JWT" then JWTType.JWT.asRight else s"Unsupportes jwt type ${s}".asLeft
 }
 
-given [F[_]]: Decoder[StdHeader] = Decoder.instance { c =>
+given Decoder[StdHeader] = Decoder.instance { c =>
   for
     typ  <- c.downField("typ").as[JWTType]
     alg  <- c.downField("alg").as[String]
@@ -54,7 +51,8 @@ given [F[_]]: Decoder[StdHeader] = Decoder.instance { c =>
   yield StdHeader(typ, alg, cty, crit.flatMap(v => NonEmptyList.fromList(v)), jku, jwk, kid, x5u)
 }
 
-given [F[_]]: Encoder[StdClaims] with {
+given Encoder[StdClaims] with {
+
   import ClaimsKeys._
 
   def apply(c: StdClaims): Json =
@@ -74,7 +72,7 @@ given Decoder[Audience] = Decoder.instance { cur =>
     .as[String]
     .map(v => List(v))
     .orElse(cur.as[List[String]])
-    .flatMap(v => Audience.fromList(v).toRight(DecodingFailure("Invalid audience", Nil)))
+    .flatMap(v => Audience.fromList(v).toRight(CDecodingFailure("Invalid audience", Nil)))
 }
 
 given Decoder[StdClaims] = Decoder.instance { c =>
@@ -84,7 +82,7 @@ given Decoder[StdClaims] = Decoder.instance { c =>
     i.fold(None.asRight) { v =>
       Either
         .fromTry(Try(Instant.ofEpochSecond(v)))
-        .leftMap(_ => DecodingFailure("invalid date", Nil))
+        .leftMap(_ => CDecodingFailure("invalid date", Nil))
         .map(_.some)
     }
 
@@ -99,19 +97,19 @@ given Decoder[StdClaims] = Decoder.instance { c =>
   yield StdClaims(iss, sub, aud, exp, nbf, iat, jti)
 }
 
-given [A](using enc: Encoder[A]): AuxEncoder[A] with {
+given [A: Encoder]: AuxEncoder[A] with {
   private val printer = Printer(dropNullValues = true, indent = "")
 
-  def encode(a: A): Either[io.github.vlmiroshnikov.authz.jwt.EncodingFailure.type, Binary] =
-    val data = a.asJson(enc).printWith(printer)
+  def encode(a: A): Either[EncodingFailure, Binary] =
+    val data = a.asJson.printWith(printer)
     Right(Binary(data.getBytes(StandardCharsets.UTF_8)))
 }
 
-given [A](using dec: Decoder[A]): AuxDecoder[A] with {
+given [A: Decoder]: AuxDecoder[A] with {
   import io.circe.parser.parse
 
-  def decode(bin: Binary): Either[io.github.vlmiroshnikov.authz.jwt.DecodingFailure.type, A] =
+  def decode(bin: Binary): Either[DecodingFailure, A] =
     parse(new String(bin.toArray))
       .flatMap(_.as[A])
-      .leftMap(e => io.github.vlmiroshnikov.authz.jwt.DecodingFailure)
+      .leftMap(e => DecodingFailure(e.getMessage))
 }

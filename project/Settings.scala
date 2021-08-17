@@ -1,4 +1,5 @@
 import sbt._
+import sbt.Keys._
 
 object Versions {
   val dotty      = "3.0.1"
@@ -10,6 +11,11 @@ object Versions {
 }
 
 object Settings {
+
+  lazy val settings = Seq(
+    scalacOptions ++= Seq("-new-syntax", "-rewrite")
+  )
+
   lazy val circe = Seq(
     "io.circe" %% "circe-core",
     "io.circe" %% "circe-parser"

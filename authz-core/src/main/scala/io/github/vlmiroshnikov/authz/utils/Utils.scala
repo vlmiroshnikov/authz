@@ -12,19 +12,15 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
 
-object JCAHelper {
-  private lazy val kf = KeyFactory.getInstance("RSA")
+def generateRSAKeyPair: KeyPair =
+  val rsaGen = KeyPairGenerator.getInstance("RSA")
+  rsaGen.initialize(2048)
+  rsaGen.generateKeyPair
 
-  def generateRSAKeyPair: KeyPair =
-    val rsaGen = KeyPairGenerator.getInstance("RSA")
-    rsaGen.initialize(2048)
-    rsaGen.generateKeyPair
+def decodeRSAPrivateKey(data: String): PrivateKey =
+  val keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(data))
+  KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
-  def decodeRSAPrivateKey(data: String): PrivateKey =
-    val keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(data))
-    kf.generatePrivate(keySpecPKCS8)
-
-  def decodeRSAPublicKey(data: String): PublicKey =
-    val keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(data))
-    kf.generatePublic(keySpecX509)
-}
+def decodeRSAPublicKey(data: String): PublicKey =
+  val keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(data))
+  KeyFactory.getInstance("RSA").generatePublic(keySpecX509)
