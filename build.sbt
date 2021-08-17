@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.3.1"
+val versionV = "0.3.2"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty
@@ -27,16 +27,16 @@ ThisBuild / githubWorkflowPublish := Seq(
 ThisBuild / credentials += Credentials("Sonatype Nexus Repository Manager",
                                        "oss.sonatype.org",
                                        sys.env.getOrElse("SONATYPE_USERNAME", ""),
-                                       sys.env.getOrElse("SONATYPE_PASSWORD", "")
-)
+                                       sys.env.getOrElse("SONATYPE_PASSWORD", ""))
 
 ThisBuild / scmInfo := Some(
   ScmInfo(url("https://github.com/vlmiroshnikov/authz"), "git@github.com:vlmiroshnikov/authz.git")
 )
 ThisBuild / developers ++= List(
   "vlmiroshnikov" -> "Vyacheslav Miroshnikov"
-).map { case (username, fullName) =>
-  Developer(username, fullName, s"@$username", url(s"https://github.com/$username"))
+).map {
+  case (username, fullName) =>
+    Developer(username, fullName, s"@$username", url(s"https://github.com/$username"))
 }
 
 ThisBuild / organization     := "io.github.vlmiroshnikov"
@@ -48,7 +48,7 @@ addCommandAlias("release", "; reload; project /; publishSigned; sonatypeBundleRe
 def publishSettings = Seq(
   sonatypeProfileName := "io.github.vlmiroshnikov",
   publishMavenStyle   := true,
-  licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
+  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   sonatypeProjectHosting := Some(GitHubHosting("vlmiroshnikov", "authz", "vlmiroshnikov@gmai.com")),
   homepage               := Some(url("https://github.com/vlmiroshnikov/authz")),
   publishTo              := sonatypePublishToBundle.value,
@@ -58,7 +58,7 @@ def publishSettings = Seq(
 lazy val authz = project
   .in(file("."))
   .settings(scalaVersion := Versions.dotty)
-  .aggregate(`authz-core`, `authz-circe`)
+  .aggregate(`authz-core`, `authz-circe`, example)
   .settings(
     publish         := {},
     publishLocal    := {},
@@ -69,9 +69,8 @@ lazy val authz = project
 lazy val `authz-core` = project
   .in(file("authz-core"))
   .settings(
-    name         := "authz-core",
-    scalaVersion := Versions.dotty,
-    testFrameworks += new TestFramework("munit.Framework"),
+    name                 := "authz-core",
+    scalaVersion         := Versions.dotty,
     libraryDependencies ++= cats ++ codecs ++ munit
   )
   .settings(publishSettings)
@@ -80,9 +79,8 @@ lazy val `authz-circe` = project
   .in(file("authz-circe"))
   .dependsOn(`authz-core`)
   .settings(
-    name         := "authz-circe",
-    scalaVersion := Versions.dotty,
-    testFrameworks += new TestFramework("munit.Framework"),
+    name                 := "authz-circe",
+    scalaVersion         := Versions.dotty,
     libraryDependencies ++= circe ++ cats ++ munit
   )
   .settings(publishSettings)
@@ -91,7 +89,12 @@ lazy val example = project
   .in(file("authz-test"))
   .dependsOn(`authz-core`, `authz-circe`)
   .settings(
-    name := "authz-example",
-    testFrameworks += new TestFramework("munit.Framework"),
+    name                 := "authz-example",
     libraryDependencies ++= munit ++ catsEffect
+  )
+  .settings(
+    publish         := {},
+    publishLocal    := {},
+    publishArtifact := false,
+    publish / skip  := true
   )
