@@ -2,12 +2,12 @@ import sbt._
 import sbt.Keys._
 
 object Versions {
-  val dotty      = "3.0.1"
+  val dotty      = "3.1.0"
+  val cats       = "2.7.0"
+  val catsEffect = "3.3.1"
+  val munit      = "0.7.29"
   val circe      = "0.14.1"
   val codecs     = "1.15"
-  val cats       = "2.6.1"
-  val catsEffect = "3.1.1"
-  val munit      = "0.7.26"
 }
 
 object Settings {
