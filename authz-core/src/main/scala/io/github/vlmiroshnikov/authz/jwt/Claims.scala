@@ -19,11 +19,11 @@ trait Claims:
   def jwtId: Option[String]
 
 case class StdClaims(
-    val issuer: Option[String] = None,
-    val subject: Option[String] = None,
-    val audience: Option[Audience] = None,
-    val expiration: Option[Instant] = None,
-    val notBefore: Option[Instant] = None,
-    val issuedAt: Option[Instant] = None,
-    val jwtId: Option[String] = None)
+    issuer: Option[String] = None,
+    subject: Option[String] = None,
+    audience: Option[Audience] = None,
+    expiration: Option[Instant] = None,
+    notBefore: Option[Instant] = None,
+    issuedAt: Option[Instant] = None,
+    jwtId: Option[String] = None)
     extends Claims
