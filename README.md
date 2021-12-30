@@ -1,6 +1,7 @@
 ## Simple JWT scala 3 library 
 
-[![Latest version](https://index.scala-lang.org/io.github.vlmiroshnikov/authz/authz-core/latest.svg)](https://index.scala-lang.org/io.github.vlmiroshnikov/authz/authz-core/0.3.4)
+[![Latest version](https://index.scala-lang.org/vlmiroshnikov/authz/authz-core/latest.svg)](https://index.scala-lang.org/vlmiroshnikov/authz/authz-core/0.3.5)
+[![Latest version](https://index.scala-lang.org/vlmiroshnikov/authz/authz-circe/latest.svg)](https://index.scala-lang.org/vlmiroshnikov/authz/authz-circe/0.3.5)
 
 ## Install 
 ```
