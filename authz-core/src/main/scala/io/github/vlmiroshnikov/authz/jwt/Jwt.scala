@@ -62,7 +62,7 @@ def parse[F[_], H <: Header, C <: Claims](
         c <- decodeFromString(claims) >>= decode[C]
         s <- decodeFromString(signature)
       yield ParseResult(h, c, s, header + "." + claims)
-    case lst => E.raiseError(InvalidJWTFormat("Expected header.bosy.signature"))
+    case lst => E.raiseError(InvalidJWTFormat("Expected header.body.signature"))
 }
 
 extension (c: Claims)

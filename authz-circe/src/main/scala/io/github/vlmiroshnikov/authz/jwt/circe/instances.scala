@@ -35,7 +35,7 @@ given Encoder[StdHeader] with
     )
 
 given Decoder[JWTType] = Decoder.decodeString.emap { s =>
-  if s == "JWT" then JWTType.JWT.asRight else s"Unsupportes jwt type ${s}".asLeft
+  if s == "JWT" then JWTType.JWT.asRight else s"Unsupported jwt type $s".asLeft
 }
 
 given Decoder[StdHeader] = Decoder.instance { c =>

@@ -3,15 +3,15 @@ package io.github.vlmiroshnikov.authz.jwt
 import cats.syntax.all.*
 import cats.effect.*
 
-import io.github.vlmiroshnikov.authz.jwt.{given, *}
+import io.github.vlmiroshnikov.authz.jwt.{ given, * }
 import io.github.vlmiroshnikov.authz.jwt.impl.RS256
-import io.github.vlmiroshnikov.authz.jwt.circe.{given, *}
+import io.github.vlmiroshnikov.authz.jwt.circe.{ given, * }
 import io.github.vlmiroshnikov.authz.utils.*
 
 object SimpleApp extends IOApp.Simple {
 
   def run: IO[Unit] = {
-    
+
     val keyPair = generateRSAKeyPair
 
     given s: Signer[IO]   = RS256.signer[IO](keyPair.getPrivate())

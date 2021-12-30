@@ -1,7 +1,7 @@
 import Settings._
 import xerial.sbt.Sonatype._
 
-val versionV = "0.3.3"
+val versionV = "0.3.5"
 
 ThisBuild / version      := versionV
 ThisBuild / scalaVersion := Versions.dotty

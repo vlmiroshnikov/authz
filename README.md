@@ -1,5 +1,6 @@
 ## Simple JWT scala 3 library 
 
+[![Latest version](https://index.scala-lang.org/io.github.vlmiroshnikov/authz/authz-core/latest.svg)](https://index.scala-lang.org/io.github.vlmiroshnikov/authz/authz-core/0.3.4)
 
 ## Install 
 ```
@@ -10,8 +11,8 @@ libraryDependencies += "io.github.vlmiroshnikov" %% "authz-circe" % "<version>" 
 ## Example
 
 ```
-import cats.effect._
-import cats.implicits._
+import cats.syntax.all.*
+import cats.effect.*
 
 import io.github.vlmiroshnikov.authz.jwt.{given, *}
 import io.github.vlmiroshnikov.authz.jwt.impl.RS256
@@ -22,7 +23,7 @@ object SimpleApp extends IOApp.Simple {
 
   def run: IO[Unit] = {
     
-    val keyPair = JCAHelper.generateRSAKeyPair
+    val keyPair = JCAHelper.generateRSAKeyPair 
 
     given s: Signer[IO]   = RS256.signer[IO](keyPair.getPrivate())
     given v: Verifier[IO] = RS256.verifier[IO](keyPair.getPublic())
@@ -41,7 +42,7 @@ object SimpleApp extends IOApp.Simple {
 
 
 ## Dependencies
-* scala 3.0.1
-* cats 2.6.1
+* scala 3.1.0
+* cats 2.7.0
 * apache common-codecs 1.15
 * circe 0.14.1
